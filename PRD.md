@@ -1,46 +1,147 @@
-# 🤖 Auto-Issue Tagger Bot
+# 🧾 PRD: Auto-Issue Tagger Bot
 
-A GitHub App that automatically classifies new issues and assigns labels using OpenAI GPT.  
-This project helps OSS maintainers and dev teams streamline issue triage.
+## 1. Overview
 
-GitHubのIssueをAIで自動分類し、適切なラベルを付けるGitHubアプリです。  
-OSSや開発チームの運用負荷を減らし、Issue対応の効率化を支援します。
-
----
-
-## 🚀 Features / 機能概要
-
-- Detect `issues.opened` events via GitHub Webhook
-- Analyze issue content using OpenAI GPT
-- Auto-assign appropriate labels (e.g. `bug`, `feature`, `question`)
-- Optional: Keyword-based rule support
-- Optional: Slack notification and dashboard integration
+Auto-Issue Tagger Bot is a GitHub App that uses OpenAI’s GPT API to analyze newly opened GitHub Issues and automatically assign appropriate labels.  
+The goal is to reduce the manual workload of OSS maintainers and improve triaging efficiency in large or active repositories.
 
 ---
 
-## 🧠 Architecture / アーキテクチャ概要
+## 2. Goals
 
-| Component | Description |
-|----------|-------------|
-| GitHub Webhook | Detects new issues |
-| OpenAI API | Classifies content using GPT |
-| GitHub REST API | Applies selected labels |
-| Optional Slack API | Sends label suggestions or logs |
+- Automatically classify issues based on natural language content
+- Assign GitHub labels like `bug`, `feature`, `question`, etc.
+- Improve issue management consistency
+- Reduce manual triage overhead
 
 ---
 
-## 🔧 Usage / 使い方
+## 3. Target Users
 
-### Step 1: Install GitHub App  
-Install the app on the target repository.
+| Role | Pain Point | Benefit |
+|------|------------|---------|
+| OSS Maintainers | Too many unlabeled issues | Save time via auto-labeling |
+| Team Leads | Inconsistent issue triage | Ensure tagging consistency |
+| New Contributors | Unsure how to tag | Immediate auto-classification |
 
-### Step 2: Get OpenAI API Key  
-Visit [OpenAI](https://platform.openai.com/) and obtain your API key.
+---
 
-### Step 3: Set Environment Variables  
-`.env` file:
-```env
-OPENAI_API_KEY=sk-xxxxxxxxxxxx
-GITHUB_APP_ID=xxxx
-GITHUB_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----
-...
+## 4. Core Features
+
+| Feature | Description |
+|---------|-------------|
+| 🔔 Webhook Event Detection | Listen to `issues.opened` events |
+| 🧠 AI Labeling | Use OpenAI GPT to analyze the issue content |
+| 🏷️ Label Assignment | Apply the label using GitHub REST API |
+| ⚙️ Rule-Based Supplement (optional) | Keyword-triggered fallback logic |
+| 💬 Slack Notification (optional) | Post label suggestions to a channel |
+| 🧪 Test Mode | Suggest labels via comment instead of applying (safe test)
+
+---
+
+## 5. User Stories
+
+### 👨‍💻 Maintainer
+> “As a maintainer, I want new issues to be labeled automatically so I can focus on solving them instead of classifying them.”
+
+### 👩‍💻 Developer
+> “As a contributor, I want to see what kind of issue I'm opening so I know how it fits into the project.”
+
+---
+
+## 6. MVP Scope
+
+- GitHub App registration and installation
+- Webhook setup for `issues.opened`
+- Integration with OpenAI GPT API (e.g., `gpt-4`)
+- Mapping GPT output to GitHub labels
+- Label application via REST API
+- `.env` config for keys
+
+---
+
+## 7. Non-Functional Requirements
+
+- Secure handling of GitHub and OpenAI credentials
+- Latency under 5s per issue
+- Logging of AI outputs for transparency
+- Deployable to Heroku/Vercel or GitHub Actions (TBD)
+
+---
+
+## 8. External Services
+
+| Service | Use |
+|---------|-----|
+| GitHub API | Issue detection and label application |
+| GitHub Webhooks | Event trigger mechanism |
+| OpenAI API | Content classification |
+| Slack API (optional) | Notification of classifications |
+
+---
+
+## 9. Success Metrics
+
+- ✅ 80%+ labeling accuracy (manual review)
+- ⏱ 50% reduction in triage time
+- 📈 70%+ user retention after 2-week pilot
+- 🧪 < 3 false positives per 100 issues
+
+---
+
+## 10. Architecture (Simplified)
+
+
+---
+
+## 11. Future Enhancements
+
+- Labeling for Pull Requests and Discussions
+- Admin UI to edit rules and view label stats
+- Localization support (Japanese, etc.)
+- Confidence score display or manual override
+- GitHub Actions integration (workflow-level control)
+
+---
+
+## 12. Risks & Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Misclassification | Test mode with preview comment |
+| API Rate Limits | Caching or batching calls |
+| AI model bias | Fine-tuned prompts or custom models |
+| Language limitations | Explicit prompt and fallback rules |
+
+---
+
+## 13. Timeline
+
+| Week | Task |
+|------|------|
+| 1 | Setup GitHub App, Webhook |
+| 2 | Integrate OpenAI API |
+| 3 | Add labeling logic and .env support |
+| 4 | Testing, Feedback, Optional Slack link |
+
+---
+
+## 14. Team Roles
+
+| Role | Responsibility |
+|------|----------------|
+| PM | Planning, backlog |
+| Dev | GitHub API & GPT integration |
+| Prompt Engineer | GPT tuning and accuracy validation |
+| QA | Accuracy & performance testing |
+| (Optional) UX | Admin UI or dashboard
+
+---
+
+## 15. References
+
+- [Probot Framework](https://probot.github.io/)
+- [OpenAI Docs](https://platform.openai.com/docs/)
+- [GitHub Webhook Events](https://docs.github.com/en/webhooks/webhook-events-and-payloads)
+- [Octokit GitHub SDK](https://github.com/octokit/octokit.js)
+
